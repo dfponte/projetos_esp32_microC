@@ -1,0 +1,25 @@
+
+menu "Example Blink Led"
+
+   config BLINK_GPIO
+    int "Blink GPIO number"
+    range 0 10
+    default 5
+    help
+        GPIO number (I0xx) to blink on and off
+        Some GPIOs are used for other purposes (ADC, flash connections)
+        35 - 39 input only - so cannot be used as outputs.
+
+    config wifi_ssid
+        string "WiFi SSID"
+        default "rede-teste"
+        help
+            WiFi SSID to connect to.
+
+    config wifi_password
+        string "WiFi password"
+        default "12345678"
+        help 
+            WiFi password to connect to.
+    
+endmenu

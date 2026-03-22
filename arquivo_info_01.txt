@@ -1,0 +1,15 @@
+#include <stdio.h>
+
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "driver/gpio.h"
+
+
+/**
+ * @brief LEDS output and button input
+ */
+#define LED1_PIN 21   
+#define LED2_PIN 33
+#define LED3_PIN 14
+#define BUTTON1_PIN 2
+#define BUTTON2_PIN 3 

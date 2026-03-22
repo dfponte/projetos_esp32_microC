@@ -1,0 +1,24 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": false,
+      "externalConsole": true,
+      "cwd": "c:/Users/danie/Cursos/ESP32_IDF/Projetos_Esp32_gitHub/proj_04.0_gpio_interruption_button_esp32/main",
+      "program": "c:/Users/danie/Cursos/ESP32_IDF/Projetos_Esp32_gitHub/proj_04.0_gpio_interruption_button_esp32/main/build/Debug/outDebug",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+menu "Configuracoes do Projeto Customizado"
+
+config OPCAO_BOOLEANA
+    bool "Habilitar funcionalidade X"
+    default n
+    help
+      Isso habilita ou desabilita uma funcionalidade de exemplo no codigo.
+
+config VALOR_INTEIRO
+    int "Valor para a funcionalidade Y"
+    default 10
+    range 0 100
+    help
+      Define um valor inteiro para a funcionalidade Y, entre 0 e 100.
+
+endmenu
