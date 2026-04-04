@@ -42,14 +42,15 @@ void app_main(void)
 
     while(1) 
     {
-          if(duty<1023){
-             ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, duty);    //set duty cycle value
-             ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);      //update duty cycle value
+        if(duty<1023){
+             ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, duty); //set duty cycle value
+             ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0); //update duty cycle value
              duty++;
-          }else{
+        }else{
+
             duty = 0;
-          }
-          vTaskDelay(10/portTICK_PERIOD_MS);
+        }
+        vTaskDelay(10/portTICK_PERIOD_MS);
       
     }   
 }

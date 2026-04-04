@@ -44,13 +44,16 @@ void app_main(void) {
     ledc_channel_config(&ledc_channel);
 
     while (1) {
-        set_servo_angle(0);
-        vTaskDelay(pdMS_TO_TICKS(2000));
-
-        set_servo_angle(90);
-        vTaskDelay(pdMS_TO_TICKS(2000));
-
         set_servo_angle(180);
+        vTaskDelay(pdMS_TO_TICKS(550));
+
+        
         vTaskDelay(pdMS_TO_TICKS(2000));
+
+        //set_servo_angle(180);
+        //vTaskDelay(pdMS_TO_TICKS(2000));
+
+       // set_servo_angle(270);
+        //vTaskDelay(pdMS_TO_TICKS(2000));
     }
 }

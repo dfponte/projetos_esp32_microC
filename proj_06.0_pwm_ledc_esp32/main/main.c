@@ -2,10 +2,11 @@
 //freeRTOS includes
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-
+#include <esp_log.h>
 //ESP32 includes
 #include "driver/ledc.h"
 
+static const char* TAG = "ledc PWM";
 //main task
 void app_main(void)
 {
@@ -16,7 +17,7 @@ void app_main(void)
     .speed_mode = LEDC_LOW_SPEED_MODE,      //timer mode      
     .timer_num = LEDC_TIMER_0,              //timer number  
     .freq_hz = 5000,                        //frequency in Hz
-    .duty_resolution = LEDC_TIMER_10_BIT,   //duty resolution
+    .duty_resolution = LEDC_TIMER_10_BIT,   //duty resolutionP
     .clk_cfg = LEDC_AUTO_CLK                //clock source
     };
     ledc_timer_config(&timer_conf);        //apply the configuration    
@@ -38,7 +39,8 @@ void app_main(void)
 
 
     while(1) 
-    {
+    {      
+           ESP_LOGI(TAG,"PWM");
            if(duty<1023){
              ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, duty); //set duty cycle value
              ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0); //update duty cycle value
