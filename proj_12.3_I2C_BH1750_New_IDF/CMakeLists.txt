@@ -3,4 +3,4 @@
 cmake_minimum_required(VERSION 3.16)
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
-project(proj_12.3_v1_Inten_Bh1750)
+project(proj_12.3_I2C_BH1750_New_IDF)
