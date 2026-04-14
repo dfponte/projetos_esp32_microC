@@ -8,7 +8,7 @@ static const char *TAG = "SERVO_CONTROL"; // Identificador para o log
 
 #define SERVO_MIN_PULSEWIDTH_US 500
 #define SERVO_MAX_PULSEWIDTH_US 2500
-#define SERVO_PULSE_PERIOD_US   20000
+#define SERVO_PULSE_PERIOD_US   20000   //20000 us
 
     uint32_t angle_to_duty(int angle) {
     uint32_t pulsewidth = SERVO_MIN_PULSEWIDTH_US + (angle * (SERVO_MAX_PULSEWIDTH_US - SERVO_MIN_PULSEWIDTH_US) / 180);
@@ -47,7 +47,7 @@ void app_main(void) {
         set_servo_angle(180);
         vTaskDelay(pdMS_TO_TICKS(550));
 
-        
+        set_servo_angle(90);
         vTaskDelay(pdMS_TO_TICKS(2000));
 
         //set_servo_angle(180);

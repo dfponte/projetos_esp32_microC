@@ -4,6 +4,10 @@
 #include "driver/i2c_master.h"
 #include "esp_log.h"
 
+#include "driver/gpio.h"
+
+#define RELE_PIN 21
+
 static const char *TAG = "BH1750_S3";
 
 // Configuração de Pinos para o S3
@@ -12,6 +16,7 @@ static const char *TAG = "BH1750_S3";
 #define BH1750_ADDR             0x23 
 #define BH1750_CMD_CONT_HIGH    0x10 
 
+//float lux;
 void app_main(void)
 {
     // 1. Configurar o barramento I2C Master
@@ -39,22 +44,35 @@ void app_main(void)
     uint8_t cmd = BH1750_CMD_CONT_HIGH;
     ESP_ERROR_CHECK(i2c_master_transmit(dev_handle, &cmd, 1, -1));
 
+    //Config Pino 2 Rele
+
+     gpio_reset_pin(RELE_PIN);
+     gpio_set_direction(RELE_PIN,GPIO_MODE_DEF_OUTPUT);
+     
     while (1) {
         vTaskDelay(pdMS_TO_TICKS(200)); // Aguarda conversão do sensor
 
         uint8_t data[2];
         // 4. Receber 2 bytes de dados
         esp_err_t ret = i2c_master_receive(dev_handle, data, 2, -1);
-
+        
         if (ret == ESP_OK) {
             // Cálculo: (MSB << 8 | LSB) / 1.2
-            float lux = (float)((data[0] << 8) | data[1]) / 1.2;
+             float lux = (float)((data[0] << 8) | data[1]) / 1.2;
             ESP_LOGI(TAG, "Luminosidade: %.2f Lux", lux);
+             if(lux <= 10){
+             ESP_LOGI(TAG, "Luminosidade:Lux = 10 - RELE");
+             gpio_set_level(RELE_PIN,1);
+           }else{
+             gpio_set_level(RELE_PIN,0);
+           }
+
         } else {
             ESP_LOGE(TAG, "Erro ao ler sensor! Verifique conexões.");
         }
 
+       
+
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
-    
