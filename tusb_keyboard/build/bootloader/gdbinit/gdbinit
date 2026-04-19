@@ -1,0 +1,2 @@
+source C:/Users/danie/Cursos/ESP32_IDF/Projetos_Esp32_gitHub/tusb_keyboard/build/bootloader/gdbinit/symbols
+source C:/Users/danie/Cursos/ESP32_IDF/Projetos_Esp32_gitHub/tusb_keyboard/build/bootloader/gdbinit/connect
