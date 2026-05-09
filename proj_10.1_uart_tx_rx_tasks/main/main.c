@@ -17,16 +17,21 @@ void app_main(void)
 {
     // Configure parameters of an UART driver,
     const uart_config_t uart_config = {
-        .baud_rate = 115200,                        // baudrate
+        .baud_rate = 9600,                        // baudrate
         .data_bits = UART_DATA_8_BITS,              // data bit
         .parity = UART_PARITY_DISABLE,              // without parity
         .stop_bits = UART_STOP_BITS_1,              // stop bit
         .flow_ctrl = UART_HW_FLOWCTRL_DISABLE,      // without flow control
         .source_clk = UART_SCLK_DEFAULT,            // use default clock source
     };
-    uart_param_config(UART_NUM_0, &uart_config); 
-    uart_driver_install(UART_NUM_0, RX_BUF_SIZE * 2, 0, 0, NULL, 0);    // install UART driver
+    uart_param_config(UART_NUM_1, &uart_config); 
+    uart_driver_install(UART_NUM_1, RX_BUF_SIZE * 2, 0, 0, NULL, 0);    // install UART driver
                            // configure UART parameters
+    
+    //Set pin
+
+     uart_set_pin(UART_NUM_1, 4, 5, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE);
+
 
     // Create tasks
     xTaskCreate(rx_task, "uart_rx_task", configMINIMAL_STACK_SIZE + 1024*2, NULL, 2, NULL);
@@ -37,7 +42,7 @@ void app_main(void)
 int sendData(const char* logName, const char* data)
 {
     const int len = strlen(data);                                   // data length
-    const int txBytes = uart_write_bytes(UART_NUM_0, data, len);    // write data to UART
+    const int txBytes = uart_write_bytes(UART_NUM_1, data, len);    // write data to UART
     ESP_LOGI(logName, "Wrote %d bytes - Mesage: %s", txBytes,data);                   // log
     return txBytes;                                                 // return number of bytes sent
 }
@@ -69,7 +74,7 @@ void rx_task(void *pvParameters)
 
     while (1) 
     {
-        const int rxBytes = uart_read_bytes(UART_NUM_0, data, RX_BUF_SIZE, pdMS_TO_TICKS(1000));    // read data from UART
+        const int rxBytes = uart_read_bytes(UART_NUM_1, data, RX_BUF_SIZE, pdMS_TO_TICKS(1000));    // read data from UART
         if (rxBytes > 0)                                                        // if data received
         {                                                                   
             data[rxBytes] = '\0';                                               // add null terminator      

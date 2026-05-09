@@ -4,6 +4,11 @@
 #include <driver/i2c.h>
 #include <esp_log.h>
 
+
+#include "bh1750.h"   // Exemplo de bibliotecas comuns
+#include "vl53l0x.h"
+#include "aht10.h"
+
 static char tag[] = "I2C Scanner";  //tag for logging
 
 //define for i2c 
