@@ -29,9 +29,9 @@ void app_main(void) {
     ESP_LOGI(TAG, "Sistema pronto. Envie '1' pelo adaptador serial.");
 
     while (1) {
+        
         // Tenta ler dados da UART
         int len = uart_read_bytes(UART_PORT_NUM, data, BUF_SIZE - 1, pdMS_TO_TICKS(100));
-        
         if (len > 0) {
             data[len] = '\0';
             
@@ -41,7 +41,8 @@ void app_main(void) {
                 ESP_LOGI(TAG, "COMANDO RECEBIDO: O valor '1' foi detectado!");
                 
                 // 2. Opcional: Envia uma resposta de volta para o adaptador
-                char *reply = "Confirmado: recebi o numero 1\r\n";
+              char *reply = "Confirmado: recebi o numero 1\r\n";
+              
                 uart_write_bytes(UART_PORT_NUM, reply, strlen(reply));
             } else {
                 ESP_LOGW(TAG, "Recebido algo diferente: %s", (char *)data);
