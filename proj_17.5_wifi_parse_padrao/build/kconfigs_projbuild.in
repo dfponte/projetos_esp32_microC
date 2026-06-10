@@ -1,0 +1,7 @@
+source "C:/Espressif/frameworks/esp-idf-v5.5.3/components/bootloader/Kconfig.projbuild"
+source "C:/Espressif/frameworks/esp-idf-v5.5.3/components/esp_app_format/Kconfig.projbuild"
+source "C:/Espressif/frameworks/esp-idf-v5.5.3/components/esp_rom/Kconfig.projbuild"
+source "C:/Espressif/frameworks/esp-idf-v5.5.3/components/esptool_py/Kconfig.projbuild"
+source "C:/Espressif/frameworks/esp-idf-v5.5.3/components/partition_table/Kconfig.projbuild"
+source "C:/Espressif/frameworks/esp-idf-v5.5.3/components/protocol_examples_common/Kconfig.projbuild"
+source "C:/Users/danie/Cursos/ESP32_IDF/Projetos_Esp32_gitHub/proj_17.5_wifi_parse_padrao/main/Kconfig.projbuild"

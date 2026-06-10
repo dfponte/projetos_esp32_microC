@@ -26,8 +26,7 @@ char *getAuthModeName(wifi_auth_mode_t wifi_auth_mode)
     switch(wifi_auth_mode)
     {
     case WIFI_AUTH_WPA3_EXT_PSK_MIXED_MODE:
-        printf("WPA3 External PSK Mixed Mode");
-        break;
+        return "WIFI_AUTH_WPA3_EXT_PSK_MIXED_MODE";
     case WIFI_AUTH_OPEN:
         return "WIFI_AUTH_OPEN";
     case WIFI_AUTH_WEP:
@@ -50,51 +49,59 @@ char *getAuthModeName(wifi_auth_mode_t wifi_auth_mode)
         return "WIFI_AUTH_OWE";
     case WIFI_AUTH_MAX:
         return "WIFI_AUTH_MAX";
+    default:
+        return "WIFI_AUTH_UNKNOWN";
     }
-    return "NOT FOUND";
 }
 
 /* Initialize Wi-Fi as sta and set scan method */
 static void wifi_scan(void)
 {
-    ESP_ERROR_CHECK(esp_netif_init());                              // Initialize the underlying TCP/IP stack
-    ESP_ERROR_CHECK(esp_event_loop_create_default());               // Create default event loop
-    esp_netif_t *sta_netif = esp_netif_create_default_wifi_sta();   // Create default Wi-Fi station netif instance
-    assert(sta_netif);                                              // Check the netif has been created
+    ESP_ERROR_CHECK(esp_netif_init());                              
+    ESP_ERROR_CHECK(esp_event_loop_create_default());               
+    esp_netif_t *sta_netif = esp_netif_create_default_wifi_sta();   
+    assert(sta_netif);                                              
 
-    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();            // Init Wi-Fi config structure
-    ESP_ERROR_CHECK(esp_wifi_init(&cfg));                           // Init Wi-Fi driver
+    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();            
+    ESP_ERROR_CHECK(esp_wifi_init(&cfg));                           
 
-    uint16_t number = DEFAULT_SCAN_LIST_SIZE;                       // Number of APs found in scan
-    wifi_ap_record_t ap_info[DEFAULT_SCAN_LIST_SIZE];               // Array to store APs found in scan
-    uint16_t ap_count = 0;                                          // Number of APs found in scan
-    memset(ap_info, 0, sizeof(ap_info));                            // Clear array
+    uint16_t number = DEFAULT_SCAN_LIST_SIZE;                       
+    wifi_ap_record_t ap_info[DEFAULT_SCAN_LIST_SIZE];               
+    uint16_t ap_count = 0;                                          
+    memset(ap_info, 0, sizeof(ap_info));                            
 
-    wifi_scan_config_t wifi_scan_config = {                         // Set scan method
+    // CORREÇÃO 1: Removido o filtro de canal para escanear todas as frequências (0 = todos os canais)
+    wifi_scan_config_t wifi_scan_config = {                         
         .show_hidden = true,
-        .channel = 11,
+        .channel = 0, 
     };                                                          
 
-    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));               // Set Wi-Fi mode to station
-    ESP_ERROR_CHECK(esp_wifi_start());                               // Start Wi-Fi
-    ESP_ERROR_CHECK(esp_wifi_scan_start(&wifi_scan_config, true));                    // Start Wi-Fi scan
-    ESP_ERROR_CHECK(esp_wifi_scan_get_ap_records(&number, ap_info)); // Get number of APs found in scan
-    ESP_ERROR_CHECK(esp_wifi_scan_get_ap_num(&ap_count));               // Get APs found in scan
-    ESP_LOGI(TAG, "Total APs scanned = %u", ap_count);                  // Print number of APs found in scan
+    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));               
+    ESP_ERROR_CHECK(esp_wifi_start());                              
+    
+    // Executa a varredura de forma síncrona (bloqueante)
+    ESP_ERROR_CHECK(esp_wifi_scan_start(&wifi_scan_config, true));                    
+    
+    // CORREÇÃO 2: Primeiro pega o número total de APs encontrados
+    ESP_ERROR_CHECK(esp_wifi_scan_get_ap_num(&ap_count));               
+    ESP_LOGI(TAG, "Total APs scanned = %u", ap_count);                  
 
-    // Print APs found in scan
-    for (int i = 0; (i < DEFAULT_SCAN_LIST_SIZE) && (i < ap_count); i++) {          // Loop through APs found in scan
-        ESP_LOGI(TAG, "SSID \t%s", ap_info[i].ssid);                              // Print SSID
-        ESP_LOGI(TAG, "RSSI \t%d", ap_info[i].rssi);                              // Print RSSI
-        ESP_LOGI(TAG, "Authmode \t%s", getAuthModeName(ap_info[i].authmode));       // Print authentication mode
-        ESP_LOGI(TAG, "Channel \t%d\n", ap_info[i].primary);                      // Print primary channel
+    // CORREÇÃO 3: Depois lê os registros limitando ao tamanho máximo do seu array
+    ESP_ERROR_CHECK(esp_wifi_scan_get_ap_records(&number, ap_info)); 
+
+    // Imprime as redes encontradas
+    for (int i = 0; (i < DEFAULT_SCAN_LIST_SIZE) && (i < ap_count); i++) {          
+        ESP_LOGI(TAG, "SSID \t%s", ap_info[i].ssid);                              
+        ESP_LOGI(TAG, "RSSI \t%d", ap_info[i].rssi);                              
+        ESP_LOGI(TAG, "Authmode \t%s", getAuthModeName(ap_info[i].authmode));       
+        ESP_LOGI(TAG, "Channel \t%d\n", ap_info[i].primary);                      
     }
 
-    //close the connection
-    ESP_ERROR_CHECK(esp_wifi_stop());                   // Stop Wi-Fi
-    ESP_ERROR_CHECK(esp_wifi_deinit());                 // Deinit Wi-Fi    
-    ESP_ERROR_CHECK(esp_event_loop_delete_default());   // Delete default event loop
-    esp_netif_destroy(sta_netif);                       // Destroy default Wi-Fi station netif instance            
+    // Finaliza os recursos de forma limpa
+    ESP_ERROR_CHECK(esp_wifi_stop());                   
+    ESP_ERROR_CHECK(esp_wifi_deinit());                 
+    ESP_ERROR_CHECK(esp_event_loop_delete_default());   
+    esp_netif_destroy(sta_netif);                                  
 }
 
 void app_main(void)

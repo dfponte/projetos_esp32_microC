@@ -1,0 +1,2 @@
+--flash_mode dio --flash_freq 80m --flash_size 2MB
+0x10000 proj_17.5_wifi_parse_padrao.bin

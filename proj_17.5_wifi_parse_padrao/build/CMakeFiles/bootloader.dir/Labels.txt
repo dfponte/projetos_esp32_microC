@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+C:/Users/danie/Cursos/ESP32_IDF/Projetos_Esp32_gitHub/proj_17.5_wifi_parse_padrao/build/CMakeFiles/bootloader
+C:/Users/danie/Cursos/ESP32_IDF/Projetos_Esp32_gitHub/proj_17.5_wifi_parse_padrao/build/CMakeFiles/bootloader.rule
+C:/Users/danie/Cursos/ESP32_IDF/Projetos_Esp32_gitHub/proj_17.5_wifi_parse_padrao/build/CMakeFiles/bootloader-complete.rule
+C:/Users/danie/Cursos/ESP32_IDF/Projetos_Esp32_gitHub/proj_17.5_wifi_parse_padrao/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+C:/Users/danie/Cursos/ESP32_IDF/Projetos_Esp32_gitHub/proj_17.5_wifi_parse_padrao/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+C:/Users/danie/Cursos/ESP32_IDF/Projetos_Esp32_gitHub/proj_17.5_wifi_parse_padrao/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+C:/Users/danie/Cursos/ESP32_IDF/Projetos_Esp32_gitHub/proj_17.5_wifi_parse_padrao/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+C:/Users/danie/Cursos/ESP32_IDF/Projetos_Esp32_gitHub/proj_17.5_wifi_parse_padrao/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+C:/Users/danie/Cursos/ESP32_IDF/Projetos_Esp32_gitHub/proj_17.5_wifi_parse_padrao/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+C:/Users/danie/Cursos/ESP32_IDF/Projetos_Esp32_gitHub/proj_17.5_wifi_parse_padrao/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
