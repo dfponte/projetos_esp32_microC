@@ -4,6 +4,7 @@
   "idf.openOcdConfigs": [
     "board/esp32-wrover-kit-3.3v.cfg"
   ],
+  "idf.portWin": "COM30",
   "idf.currentSetup": "C:/Espressif/frameworks/esp-idf-v5.5.3/",
   "idf.customExtraVars": {
     "IDF_TARGET": "esp32s3"
@@ -14,6 +15,5 @@
     "--query-driver=**",
     "--compile-commands-dir=c:\\Users\\danie\\Cursos\\ESP32_IDF\\Projetos_Esp32_gitHub\\proj_19_wifi_sev_adc_i2c_but\\build"
   ],
-  "idf.flashType": "UART",
-  "idf.portWin": "COM30"
+  "idf.flashType": "UART"
 }

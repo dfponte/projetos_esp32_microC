@@ -4,5 +4,3 @@ cmake_minimum_required(VERSION 3.16)
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 project(proj_19_wifi_sev_adc_i2c_but)
-
-

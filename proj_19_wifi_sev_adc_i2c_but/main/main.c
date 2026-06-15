@@ -11,9 +11,10 @@
 #include "esp_adc/adc_oneshot.h"
 
 // ==================== CONFIGURAÇÕES DE REDE ====================
-#define WIFI_SSID        "GalaxyDp"   
-#define WIFI_PASS        "Daniel13" 
-#define SERVER_URL       "http://10.78.168.215" // URL completa com a rota /data
+#define WIFI_SSID        "IoT_IFPI_DFP"   
+#define WIFI_PASS        "1234567890" 
+// URL perfeitamente alinhada com a barra '/' final
+#define SERVER_URL       "http://192.168.50.100:3000/" 
 
 // ==================== CONFIGURAÇÕES DE HARDWARE ====================
 #define PIN_BUTTON      GPIO_NUM_21   // Botão de Boot padrão do ESP32-S3
@@ -114,41 +115,58 @@ static void peripherals_init(adc_oneshot_unit_handle_t *adc_handle) {
     adc_oneshot_config_channel(*adc_handle, PIN_ADC_CH, &adc_config);
 }
 
-// Envio dos dados via HTTP POST
+// Envio dos dados via HTTP POST com as correções de método
+
 static void send_http_post(float luz, int adc, int botao) {
     if (!s_connected) {
         ESP_LOGW(TAG, "Envio cancelado: Placa sem conexão Wi-Fi ativa.");
         return;
     }
 
-    char json_payload[256]; // Buffer expandido com margem de segurança contra estouro
+    char json_payload[256]; 
     snprintf(json_payload, sizeof(json_payload), "{\"luz\":%.2f,\"adc\":%d,\"botao\":%d}", luz, adc, botao);
 
+    // Configuração inicial limpa
     esp_http_client_config_t config = {
-        .url = SERVER_URL,                     
-        .method = HTTP_METHOD_POST,
-        .transport_type = HTTP_TRANSPORT_OVER_TCP, 
-        .timeout_ms = 5000, // Evita travamento da Task se o servidor cair
+        .url = SERVER_URL,
+        .method = HTTP_METHOD_POST, // Força POST na estrutura
+        .transport_type = HTTP_TRANSPORT_OVER_TCP,
+        .timeout_ms = 5000,
+        .disable_auto_redirect = true, 
     };
 
     esp_http_client_handle_t client = esp_http_client_init(&config);
+    if (client == NULL) {
+        ESP_LOGE(TAG, "Erro crítico: Falha ao alocar memória para o cliente HTTP.");
+        return;
+    }
     
+    // =================================================================
+    // CORREÇÃO CRÍTICA: Força o método e limpa dados antigos do cliente
+    // =================================================================
+    esp_http_client_set_method(client, HTTP_METHOD_POST);
+    esp_http_client_delete_header(client, "Authorization"); // Limpa resíduos se houver
+    
+    // Define o cabeçalho e os dados do payload
     esp_http_client_set_header(client, "Content-Type", "application/json");
     esp_http_client_set_post_field(client, json_payload, (int)strlen(json_payload));
 
+    // Executa a transmissão
     esp_err_t err = esp_http_client_perform(client);
     if (err == ESP_OK) {
         int status_code = esp_http_client_get_status_code(client);
-        if (status_code == 200) {
+        if (status_code >= 200 && status_code < 300) {
             ESP_LOGI(TAG, "HTTP POST Sucesso: Status %d", status_code);
         } else {
-            ESP_LOGW(TAG, "HTTP POST Erro de Rota no Servidor: Status %d", status_code);
+            ESP_LOGW(TAG, "O servidor rejeitou. Status: %d", status_code);
         }
     } else {
-        ESP_LOGE(TAG, "Falha Crítica na Conexão HTTP: %s", esp_err_to_name(err));
+        ESP_LOGE(TAG, "Falha na transmissão: %s", esp_err_to_name(err));
     }
+    
     esp_http_client_cleanup(client);
-}
+}  //send_http_post
+
 
 void app_main(void) {
     adc_oneshot_unit_handle_t adc_handle;
