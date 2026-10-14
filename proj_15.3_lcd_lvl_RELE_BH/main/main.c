@@ -38,7 +38,7 @@ static const char *TAG = "main_app";
 // --- PONTEIROS GLOBAIS DA INTERFACE (MUDANÇA DINÂMICA) ---
 static lv_obj_t *label_lux_val = NULL;
 static lv_obj_t *label_status = NULL;
-
+//Controle
 // --- CONTROLE DE FLICKERING ---
 static int g_ultimo_lux = -999;
 static int g_ultimo_rele = -1;
