@@ -14,6 +14,6 @@
     "--query-driver=**",
     "--compile-commands-dir=c:\\Users\\danie\\Cursos\\ESP32_IDF\\Projetos_Esp32_gitHub\\proj_19_wifi_servidor_button\\build"
   ],
-  "idf.portWin": "COM30",
+  "idf.portWin": "COM5",
   "idf.flashType": "UART"
 }

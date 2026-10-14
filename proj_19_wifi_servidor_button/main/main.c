@@ -17,7 +17,7 @@
 // Configurações de Rede e Servidor (Altere com seus dados)
 #define WIFI_SSID       "GalaxyDp"//"HOME PONTE"
 #define WIFI_PASS       "Daniel13"
-#define WS_SERVER_URI   "ws://10.78.168.215:3000" // Use o IP do seu PC/Servidor
+#define WS_SERVER_URI   "ws://10.196.50.215:3000" // Use o IP do seu PC/Servidor
 
 // Configurações de Hardware
 #define BUTTON_GPIO     GPIO_NUM_21   // Botão BOOT nativo da placa
@@ -185,7 +185,7 @@ void app_main(void)
     ESP_LOGI(TAG, "Inicializando modo de operação ESP32-S3 STA");
     wifi_init_sta();
 
-    // Criação das duas rotinas concorrentes no FreeRTOS
+    //Criação das duas rotinas concorrentes no FreeRTOS
     xTaskCreate(&button_task, "button_task", 4096, NULL, 5, NULL);
-    xTaskCreate(&websocket_task, "websocket_task", 4096, NULL, 5, NULL);
+    xTaskCreate(&websocket_task, "websocket_task",4096, NULL, 5, NULL);
 }

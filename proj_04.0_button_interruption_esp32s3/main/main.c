@@ -45,10 +45,11 @@ while(true){
     gpio_intr_enable(BUTTON_4);
     printf("Aguardando interrupcao....\n");
     vTaskDelay(1000/portTICK_PERIOD_MS);
+    vTaskDelay(1000/portTICK_PERIOD_MS);
     printf(">>>>>>>>........Valor ?......<<<<<<<<\n");
     printf("Valor = %d\n",valor);
     if(valor==10){
-         valor=0;2
+         valor=0;
     }
 }
 
